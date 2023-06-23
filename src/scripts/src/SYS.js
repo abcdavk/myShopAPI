@@ -63,7 +63,8 @@ const handleCommand = (command, args, player) => {
         	if (player.hasTag("hasCLAIM")) { 
         		player.sendMessage(`<mSL> §cError: You have claimed before§r`)
 			} else { 
-				player.runCommandAsync(`scoreboard players add @a[tag=!SETUP] ${SHOP.currency[0]} ${SHOP.currency[2]}`);
+				player.runCommandAsync(`scoreboard players add @a[tag=!hasClaim] ${SHOP.currency[0]} ${SHOP.currency[2]}`);
+				player.runCommandAsync(`tag @s add hasClaim`);
 				player.sendMessage(`<mSL> §aClaim success: §rtype §a${SHOP.commands[0]}${SHOP.commands[1]}§r to start shopping`)
 			}
         	break;
