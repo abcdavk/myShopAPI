@@ -13,22 +13,52 @@
                        |___/
 */
 
+// VERSION 2.1.0
 export const SHOP = {
-  commands: [".", "shop"], // Prefix, Suffix
+  commands: [".s", ".sh", ".shop", ".st", ".store"], // Command aliases, you can add more.
   currency: ["dollar", "$", 10], // Scroreboard objectives, Symbols, Default first player money amount
   categories: {
-    weapons: {
+    trash: {
+      icon: "textures/ui/icon_trash",
       items: [
-        ["minecraft:wooden_sword", 5, "textures/items/wood_sword"], // Item name, price, iconPath
-        ["minecraft:stone_sword", 15, "textures/items/stone_sword"],
-        ["minecraft:iron_sword", 10, ""]
+        ["minecraft:dirt", "textures/blocks/dirt", 10, 5],
+        ["minecraft:stone", "textures/blocks/stone", 15, 10],
+        ["minecraft:gravel", "textures/blocks/gravel", 20, 15]
       ]
     },
-    armors: {
+    foods: {
+      icon: "textures/ui/hunger_full",
       items: [
-        ["minecraft:leather_helmet", 10, ""], // Item name, price, iconPath
-        ["minecraft:iron_helmet", 15, ""]
+        ["minecraft:apple", "textures/items/apple", 20, 10],
+        ["minecraft:carrot", "textures/items/carrot", 25, 15],
+        ["minecraft:sapling", "textures/blocks/sapling_oak", 30, 25]
+      ]
+    },
+    no_icon_test: {
+      icon: "",
+      items: [
+        ["minecraft:dirt", "", 10, 2],
+        ["minecraft:stone", "", 15, 3],
+        ["minecraft:gravel", "", 20, 4]
       ]
     }
   }
 };
+
+
+// VERSION: 2.0.1
+/*
+export const SHOP = {
+  commands: [".", "shop"], // Prefix, Suffix
+  currency: ["dollar", "$", 10], // Scroreboard objectives, Symbols, Default first player money amount
+  categories: {
+    example: {
+      items: [
+        ["minecraft:dirt", 10, "textures/blocks/dirt"],
+        ["minecraft:stone", 15, "textures/blocks/stone"],
+        ["minecraft:gravel", 20, "textures/blocks/gravel"]
+      ]
+    }
+  }
+};
+*/

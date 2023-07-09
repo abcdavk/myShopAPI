@@ -14,14 +14,18 @@
 */
 
 export const SYS = {
+	version: "2.1.0", // Available version: 2.0.1, 2.1.0
+	name: "[ mSL ]", // Chat prefix. Used when the system sends a message to the player
+	delayBeforeForm: 60, // Recommended before form delay: 60
+	delayAfterForm: 20, // Recommended after forn delay: 20
+	scoreboard: { setDisplay: "sidebar", title: "Top Money"}, // setDisplay: "sidebar" or "list" or "belowname" or false
 	commands: {
-		permission: "op",
 		prefix: ".msl",
 		args: {
 			help: "help",
-			setup: "setup",
 			money: "mymoney",
-			claim: "claim"
+			about: "about",
+			shoplist: "shops"
 		}
 	}
 };
