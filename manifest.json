@@ -1,0 +1,49 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "myShopLoader",
+    "uuid": "aeb77a05-78c1-4e68-9e63-dd54560ec7b6",
+    "version": [
+      2,
+      1,
+      4
+    ],
+    "min_engine_version": [
+      1,
+      20,
+      50
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "a1deeded-2f95-4b6c-8f00-8697add8b5f5",
+      "version": [
+        2,
+        1,
+        4
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "9a4104d1-e2da-4d90-9816-2f8ed54ff7ba",
+      "version": [
+        2,
+        1,
+        4
+      ],
+      "entry": "scripts/src/MAIN.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.8.0-beta"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0-beta"
+    }
+  ]
+}
