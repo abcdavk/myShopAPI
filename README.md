@@ -1,2 +1,1 @@
-# myShopAPI
-Worst project
+# myShopLoader v3
