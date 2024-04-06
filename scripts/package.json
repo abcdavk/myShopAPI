@@ -1,5 +1,24 @@
 {
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abcdavk/myShopAPI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abcdavk/myShopAPI/issues"
+  },
+  "homepage": "https://github.com/abcdavk/myShopAPI#readme",
   "dependencies": {
-    "@minecraft/server": "^1.9.0"
+    "@minecraft/common": "^1.2.0",
+    "@minecraft/server": "^1.9.0",
+    "@minecraft/server-ui": "^1.1.0"
   }
 }
