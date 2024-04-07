@@ -1,4 +1,5 @@
 const commands = {
+    previx: '.msl',
     shop: 'shop',
     admin: 'admin'
 }

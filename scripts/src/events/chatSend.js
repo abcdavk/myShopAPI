@@ -1,20 +1,20 @@
 import { commands, msystem } from "../../config";
-import { msgHandler } from "../libraries/main";
-import { shopUI } from "../handler/main";
+import { shopUI, msgHandler } from "../handler/main";
 
 export function chatSend(event) {
     const player = event.sender
     const message = event.message
-    if(message.startsWith(commands.shop)) {
+    if(message.startsWith(commands.previx)) {
+        event.cancel
         processCommand(player, message)
     }
 }
 
 function processCommand(player, message) {
     const [prefix, command, ...args] = message.split(" ")
-    if (prefix === '.msl') {
+    if (prefix === commands.previx) {
         switch (command) {
-            case command.shop:
+            case commands.shop:
                 {
                     shopUI(player, args)
                 }
