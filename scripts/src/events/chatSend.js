@@ -1,7 +1,8 @@
 import { system } from "@minecraft/server";
 
 import { commands, msystem } from "../../config";
-import { shopUI, msgHandler } from "../handler/main";
+import { shopUI, msgHandler, adminUI } from "../handler/main";
+import { addMoney, rdcMoney, setMoney } from "../libraries/Economy/main";
 
 export function chatSend(event) {
     const player = event.sender
@@ -18,11 +19,21 @@ function processCommand(player, message) {
         switch (command) {
             case commands.shop:
                 {
-                    shopUI(player, args)
+                    msgHandler(player, "Please close the chat and wait a second...")
+                    system.runTimeout(() => {
+                        shopUI(player, args)
+                    }, 60)
                 }
+                break;
             case commands.admin:
                 {
+                    if(player.hasTag(msystem.permission)) {
+                       adminUI(player) 
+                    } else {
+                        msgHandler(player, "You don't have permission to use this command!", true)
+                    }
                 }
+                break;
         }
     }
 }

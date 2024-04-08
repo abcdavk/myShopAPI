@@ -1,6 +1,4 @@
-import {
-    JaylyDB
-} from "../libraries/main"
+import { JaylyDB } from "../libraries/main";
 const playerDB = new JaylyDB("player", false)
 
 export function playerdbUpdater(player, pdbArray, oldValue, newValue) {
@@ -10,5 +8,5 @@ export function playerdbUpdater(player, pdbArray, oldValue, newValue) {
     }
     const string = pdbArray.join(",");
     console.warn(string)
-    playerDB.set(player.nameTag, string)
+    playerDB.set(player, string)
 }

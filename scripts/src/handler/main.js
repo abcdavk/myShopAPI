@@ -4,6 +4,7 @@ import { msgHandler } from "./msgHandler";
 import { stringToArray } from "./stringToArray";
 import { playerdbUpdater } from "./playerdbUpdater";
 import { stringToBoolean } from "./stringToBoolean";
+import { adminUI } from "./adminUI";
 
 export {
     shopUI,
@@ -11,5 +12,6 @@ export {
     msgHandler,
     stringToArray,
     playerdbUpdater,
-    stringToBoolean
+    stringToBoolean,
+    adminUI
 }

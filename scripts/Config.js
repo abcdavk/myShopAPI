@@ -5,7 +5,8 @@ const commands = {
 }
 
 const msystem = {
-    title: 'myShopLoader'
+    title: 'myShopLoader',
+    permission: 'op'
 }
 
 export { commands, msystem }

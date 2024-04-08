@@ -10,17 +10,28 @@ import {
     stringToArray
 } from './stringToArray';
 import {
-    JaylyDB
-} from "../libraries/main"
-import { msgHandler } from './msgHandler';
-import { playerdbUpdater } from './playerdbUpdater';
-import { stringToBoolean } from './stringToBoolean';
+    msgHandler
+} from './msgHandler';
+import {
+    playerdbUpdater
+} from './playerdbUpdater';
+import {
+    stringToBoolean
+} from './stringToBoolean';
+import {
+    addMoney,
+    rdcMoney
+} from "../libraries/Economy/main"
+import { JaylyDB } from '../libraries/main';
+
 const shopDB = new JaylyDB("shop", false)
 const playerDB = new JaylyDB("player", false)
 
+// Future variable
+let item_data = 0
+
 let shopList = ""
 shopDB.forEach((value, key) => {
-    // key=category, value=data
     shopList += `${key}:[${value}],`
 })
 
@@ -36,16 +47,14 @@ export function shopUI(player, args) {
             form.button(j)
         }
     }
-    system.runTimeout(() => {
-        form.show(player).then((r) => {
-            if (r.canceled || r.selection == 0) {
-                console.warn()
-            } else {
-                let selectedCategory = Object.keys(shopArray[r.selection - 1])
-                shopCategory(player, r.selection - 1, selectedCategory)
-            }
-        })
-    }, 40)
+    form.show(player).then((r) => {
+        if (r.canceled || r.selection == 0) {
+            console.warn()
+        } else {
+            let selectedCategory = Object.keys(shopArray[r.selection - 1])
+            shopCategory(player, r.selection - 1, selectedCategory)
+        }
+    })
 }
 
 function shopCategory(player, responseSelection, selectedCategory) {
@@ -62,7 +71,7 @@ function shopCategory(player, responseSelection, selectedCategory) {
     }
     system.runTimeout(() => {
         form.show(player).then((r) => {
-            if(r.canceled) {
+            if (r.canceled) {
 
             } else {
                 let selectedItem = itemList[r.selection]
@@ -74,41 +83,54 @@ function shopCategory(player, responseSelection, selectedCategory) {
 
 function shopItem(player, responseSelection, selectedItem) {
     // playerDB.set(player.nameTag, "1000,0,,false")
+
     const pdbArray = playerDB.get(player.nameTag).split(",")
     let [ownedMoney, lsAmount, lsTransc, lsTgSell] = pdbArray
     ownedMoney = parseInt(ownedMoney)
+
     console.warn(`Type of: ${typeof ownedMoney}`)
+
     let [item, sell, buy] = selectedItem
     let itemName = item.split(":")[1].replaceAll('_', ' ').toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
     const form = new ModalFormData()
         .title(itemName)
-    if(lsAmount == 0) {
+    if (lsAmount == 0) {
         form.textField("Your money: $" + ownedMoney + "\nAmount:", "Please enter a number")
     } else {
         form.textField("Your money: $" + ownedMoney + "\nAmount:", "Please enter a number", lsAmount)
     }
     form.toggle("Sell", stringToBoolean(lsTgSell))
     form.show(player).then((r) => {
-        if(!isNaN(r.formValues[0]) || r.formValues[0] != "" || !r.canceled) {
-            if(r.formValues[1] == false) {
-                if(ownedMoney >= r.formValues[0]*buy) {
+        if (!isNaN(r.formValues[0]) || r.formValues[0] != "" || !r.canceled) {
+            if (r.formValues[1] == false) {
+                if (ownedMoney >= r.formValues[0] * buy) {
                     player.runCommandAsync(`give @s ${item} ${r.formValues[0]}`)
                     msgHandler(player, `You has been buy${item}, amount: ${parseInt(r.formValues[0])}, price: ${parseInt(r.formValues[0])*buy}`)
-                    playerdbUpdater(player, pdbArray, lsTransc, item)
-                    playerdbUpdater(player, pdbArray, lsTgSell, false)
-                    playerdbUpdater(player, pdbArray, lsAmount, parseInt(r.formValues[0]))
-                    let subMoney = ownedMoney - (parseInt(r.formValues[0]) * buy)
-                    playerdbUpdater(player, pdbArray, ownedMoney.toString(), subMoney.toString())
+                    playerdbUpdater(player.nameTag, pdbArray, lsTransc, item)
+                    playerdbUpdater(player.nameTag, pdbArray, lsTgSell, false)
+                    playerdbUpdater(player.nameTag, pdbArray, lsAmount, parseInt(r.formValues[0]))
+                    addMoney(player.nameTag, buy, r.formValues[0])
                 } else {
                     msgHandler(player, "Not enought money!", true)
                 }
             } else {
-                msgHandler(player, `You has been sell ${item}, amount: ${parseInt(r.formValues[0])}, price: ${parseInt(r.formValues[0])*sell}`)
-                playerdbUpdater(player, pdbArray, lsAmount, parseInt(r.formValues[0]))
-                playerdbUpdater(player, pdbArray, lsTransc, item)
-                playerdbUpdater(player, pdbArray, lsTgSell, true)
-                let addMoney = ownedMoney + (parseInt(r.formValues[0]) * sell)
-                playerdbUpdater(player, pdbArray, ownedMoney.toString(), addMoney.toString())
+                let totalItem = 0
+                const inv = player.getComponent('minecraft:inventory').container
+                for (let i = 0; i < inv.size; i++) {
+                    if (inv.getItem(i) && inv.getItem(i)?.typeId === item) {
+                        totalItem += inv.getItem(i).amount
+                    }
+                }
+                if (totalItem >= parseInt(r.formValues[0])) {
+                    player.runCommandAsync(`clear @s ${item} ${item_data} ${r.formValues[0]}`);
+                    msgHandler(player, `You has been sell ${item}, amount: ${parseInt(r.formValues[0])}, price: ${parseInt(r.formValues[0])*sell}`)
+                    playerdbUpdater(player.nameTag, pdbArray, lsAmount, parseInt(r.formValues[0]))
+                    playerdbUpdater(player.nameTag, pdbArray, lsTransc, item)
+                    playerdbUpdater(player.nameTag, pdbArray, lsTgSell, true)
+                    rdcMoney(player.nameTag, sell, r.formValues[0])
+                } else {
+                    msgHandler(player, "Not enought items in your inventory!", true)
+                }
             }
         } else {
             msgHandler(player, "Only number is allowed", true)
