@@ -1,3 +1,5 @@
+import { system } from "@minecraft/server";
+
 import { commands, msystem } from "../../config";
 import { shopUI, msgHandler } from "../handler/main";
 
@@ -5,8 +7,8 @@ export function chatSend(event) {
     const player = event.sender
     const message = event.message
     if(message.startsWith(commands.previx)) {
-        event.cancel
-        processCommand(player, message)
+        event.cancel = true
+        system.run(() => processCommand(player, message))
     }
 }
 

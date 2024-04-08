@@ -5,14 +5,19 @@ export function stringToArray(inputString) {
     for (let categoryString of categoryArray) {
         let [categoryName, itemsString] = categoryString.split(":[");
         categoryName = categoryName.trim();
-        itemsString = itemsString.replace("]", "");
-        let items = itemsString.split(";").map(item => {
-            let [itemName, minPrice, maxPrice] = item.split(",").map(val => isNaN(val) ? val.trim() : Number(val));
-            return [itemName, minPrice, maxPrice];
-        });
-        resultArray.push({ [categoryName]: items });
+        // itemsString = itemsString.replace("]", "");
+
+        if (itemsString !==  undefined) {
+            let items = itemsString.split(";").map(item => {
+                let [itemName, sell, buy] = item.split(",").map(val => isNaN(val) ? val.trim() : Number(val));
+                return [itemName, sell, buy];
+            });
+            resultArray.push({ [categoryName]: items });
+        }
+        
     }
-    
+
+    // console.warn(JSON.stringify(resultArray));
     return resultArray
 }
 
