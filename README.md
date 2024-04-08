@@ -25,5 +25,5 @@ JaylyDB allows us to develop more features related to data storage. To make it e
 - [x] Economy; money, buy, sell
 - [x] Form shop UI
 - [x] Cache/history system; System will write last transaction, item amount entered and toggle used in a player database
-- [] In-game shop database edit
-- [] Player shop
+- [ ] In-game shop database edit
+- [ ] Player shop
