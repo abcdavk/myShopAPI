@@ -13,7 +13,10 @@ import {
     JaylyDB
 } from "../libraries/main"
 import { msgHandler } from './msgHandler';
+import { playerdbUpdater } from './playerdbUpdater';
+import { stringToBoolean } from './stringToBoolean';
 const shopDB = new JaylyDB("shop", false)
+const playerDB = new JaylyDB("player", false)
 
 let shopList = ""
 shopDB.forEach((value, key) => {
@@ -70,18 +73,46 @@ function shopCategory(player, responseSelection, selectedCategory) {
 }
 
 function shopItem(player, responseSelection, selectedItem) {
-    console.warn(selectedItem)
+    // playerDB.set(player.nameTag, "1000,0,,false")
+    const pdbArray = playerDB.get(player.nameTag).split(",")
+    let [ownedMoney, lsAmount, lsTransc, lsTgSell] = pdbArray
+    ownedMoney = parseInt(ownedMoney)
+    console.warn(`Type of: ${typeof ownedMoney}`)
     let [item, sell, buy] = selectedItem
     let itemName = item.split(":")[1].replaceAll('_', ' ').toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
     const form = new ModalFormData()
         .title(itemName)
-        .textField("Amount:", "Please enter a number")
+    if(lsAmount == 0) {
+        form.textField("Your money: $" + ownedMoney + "\nAmount:", "Please enter a number")
+    } else {
+        form.textField("Your money: $" + ownedMoney + "\nAmount:", "Please enter a number", lsAmount)
+    }
+    form.toggle("Sell", stringToBoolean(lsTgSell))
     form.show(player).then((r) => {
-        if(isNaN(r.formValues[0]) || r.formValues[0] == "" || r.canceled) {
-            msgHandler(player, "Only number is allowed", true)
+        if(!isNaN(r.formValues[0]) || r.formValues[0] != "" || !r.canceled) {
+            if(r.formValues[1] == false) {
+                if(ownedMoney >= r.formValues[0]*buy) {
+                    player.runCommandAsync(`give @s ${item} ${r.formValues[0]}`)
+                    msgHandler(player, `You has been buy${item}, amount: ${parseInt(r.formValues[0])}, price: ${parseInt(r.formValues[0])*buy}`)
+                    playerdbUpdater(player, pdbArray, lsTransc, item)
+                    playerdbUpdater(player, pdbArray, lsTgSell, false)
+                    playerdbUpdater(player, pdbArray, lsAmount, parseInt(r.formValues[0]))
+                    let subMoney = ownedMoney - (parseInt(r.formValues[0]) * buy)
+                    playerdbUpdater(player, pdbArray, ownedMoney.toString(), subMoney.toString())
+                } else {
+                    msgHandler(player, "Not enought money!", true)
+                }
+            } else {
+                msgHandler(player, `You has been sell ${item}, amount: ${parseInt(r.formValues[0])}, price: ${parseInt(r.formValues[0])*sell}`)
+                playerdbUpdater(player, pdbArray, lsAmount, parseInt(r.formValues[0]))
+                playerdbUpdater(player, pdbArray, lsTransc, item)
+                playerdbUpdater(player, pdbArray, lsTgSell, true)
+                let addMoney = ownedMoney + (parseInt(r.formValues[0]) * sell)
+                playerdbUpdater(player, pdbArray, ownedMoney.toString(), addMoney.toString())
+            }
         } else {
-            
-            player.runCommandAsync(`give @s ${item} ${r.formValues[0]}`)
+            msgHandler(player, "Only number is allowed", true)
+            shopUI(player, "")
         }
     })
 }
