@@ -10,14 +10,14 @@ Now you can edit the shop's categories, items and configuration inside the game 
 This update deprecreated configuration file such as `SHOP_conf.js` and `SYS_conf.js`
 
 ## New databases storage method
-> Status: *Under development*
+> Status: *Passed*
 
 Replacing old data storage method, from pure scoreboard to Jayly Databases
 
 Previously we only used scoreboards to store `currency`. We dedicate the use of JaylyDB to store; `shopDB`:`item,sell_price,buy_price`
 
 ## Import/Export databases
-> Status: *Planed*
+> Status: *Under development*
 
 JaylyDB allows us to develop more features related to data storage. To make it easier for users, we provide an Import/Export database feature, so users only need to import the database that was created in the old world to the new world.
 
