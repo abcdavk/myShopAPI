@@ -28,7 +28,10 @@ function processCommand(player, message) {
             case commands.admin:
                 {
                     if(player.hasTag(msystem.permission)) {
-                       adminUI(player) 
+                        msgHandler(player, "Please close the chat and wait a second...")
+                        system.runTimeout(() => {
+                            adminUI(player) 
+                        }, 60)
                     } else {
                         msgHandler(player, "You don't have permission to use this command!", true)
                     }

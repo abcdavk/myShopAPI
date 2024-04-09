@@ -5,6 +5,8 @@ import { stringToArray } from "./stringToArray";
 import { playerdbUpdater } from "./playerdbUpdater";
 import { stringToBoolean } from "./stringToBoolean";
 import { adminUI } from "./adminUI";
+import { exportHandler } from "./exportHandler";
+import { importHandler } from "./importHandler";
 
 export {
     shopUI,
@@ -13,5 +15,8 @@ export {
     stringToArray,
     playerdbUpdater,
     stringToBoolean,
-    adminUI
+    adminUI,
+    exportHandler,
+    importHandler
 }
+

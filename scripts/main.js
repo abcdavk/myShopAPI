@@ -10,4 +10,4 @@ import {
 import { chatSend, playerSpawn } from "./src/events/main";
 
 world.beforeEvents.chatSend.subscribe((e) => { chatSend(e) })
-world.afterEvents.playerSpawn.subscribe((e) => { playerSpawn(e) })
+world.afterEvents.playerSpawn.subscribe((e) => { playerSpawn(e) }) 
