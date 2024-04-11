@@ -109,7 +109,6 @@ function formEditPlayer(player) {
 
 async function formExport(player, dbType) {
     const exportText = await exportHandler(dbType)
-    console.warn(exportText)
     const form = new ModalFormData()
         .title("Export Database")
         .textField("Copy this text and save", "Loading...", exportText)
@@ -125,13 +124,12 @@ async function formExport(player, dbType) {
 }
 
 async function formImport(player, dbType) {
-    const importText = await importHandler(dbType)
-    console.warn(importText)
     const form = new ModalFormData()
         .title("Import Database")
         .textField("Paste the exported text and confirm.", "Loading...")
     form.show(player).then((r) => {
         if (r.formValues) {
+            importHandler(dbType, r.formValues[0])
             if (dbType === "playerDB") {
                 formEditPlayer(player)
             } else if (dbType === "shopDB") {
@@ -146,17 +144,17 @@ function economyHandler(player, mode) {
         .title("Economy")
         .textField("Player nametag:", "(eg: troyka_jey")
         .textField("Amount:", "(eg: 1000)")
-        .show(player).then((r) => {
-            let target = r.formValues[0]
-            let amount = r.formValues[1]
-            if (r.formValues[0] !== "" && !isNaN(r.formValues[1])) {
-                if (mode === "add") {
-                    addMoney(target, amount)
-                } else if (mode === "sub") {
-                    rdcMoney(target, amount)
-                } else if (mode === "set") {
-                    setMoney(target, amount)
-                }
+    form.show(player).then((r) => {
+        let target = r.formValues[0]
+        let amount = r.formValues[1]
+        if (r.formValues[0] !== "" && !isNaN(r.formValues[1])) {
+            if (mode === "add") {
+                addMoney(target, amount)
+            } else if (mode === "sub") {
+                rdcMoney(target, amount)
+            } else if (mode === "set") {
+                setMoney(target, amount)
             }
-        })
+        }
+    })
 }

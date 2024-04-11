@@ -14,6 +14,7 @@ export async function exportHandler(dbType) {
             exportData += `${key}=[${value}];`;
         });
     }
+    console.warn(exportData);
     return exportData;
 }
 
