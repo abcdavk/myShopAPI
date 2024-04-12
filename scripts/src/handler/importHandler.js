@@ -4,7 +4,15 @@ const playerDB = new JaylyDB("player", false)
 
 export function importHandler(dbType, importText) {
     if (dbType === "shopDB") {
-        console.warn(importText)
+        shopDB.clear()
+        const dataArray = importText.split("];");
+        dataArray.forEach(data => {
+            if(data.includes("=[")) {
+                let [key, value] = data.split("=[");
+                console.warn(`Key: ${key}, Value: ${value}`);
+                shopDB.set(key, value)
+            }
+        });
     }
     if (dbType === "playerDB") {
         playerDB.clear()
@@ -18,3 +26,4 @@ export function importHandler(dbType, importText) {
         });
     }
 }
+

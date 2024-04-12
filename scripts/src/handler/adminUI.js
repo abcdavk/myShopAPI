@@ -13,6 +13,9 @@ import {
 import {
     importHandler
 } from './importHandler';
+import {
+    msgHandler
+} from './msgHandler';
 
 export function adminUI(player) {
     console.warn("AdminUI passed")
@@ -20,14 +23,14 @@ export function adminUI(player) {
         .title("myShopAdmin")
         .button("Edit Shop Database")
         .button("Edit Player Database")
-        .show(player).then((r) => {
-            if (r.selection === 0) {
-                formEditShop(player)
-            }
-            if (r.selection === 1) {
-                formEditPlayer(player)
-            }
-        })
+    form.show(player).then((r) => {
+        if (r.selection === 0) {
+            formEditShop(player)
+        }
+        if (r.selection === 1) {
+            formEditPlayer(player)
+        }
+    })
 }
 
 function formEditShop(player) {
@@ -35,7 +38,7 @@ function formEditShop(player) {
     const form = new ActionFormData()
         .title("Edit Shop Database")
         .button("Export database")
-        .button("Import database")
+        .button("Import database\n§cbe careful, risk feature!")
         .button("Add Category")
         .button("Add Item")
         .button("Delete Category")
@@ -74,7 +77,7 @@ function formEditPlayer(player) {
     const form = new ActionFormData()
         .title("Edit Player Database")
         .button("Export database")
-        .button("Import database")
+        .button("Import database\n§cbe careful, risk feature!")
         .button("Add Money")
         .button("Sub Money")
         .button("Set Money")
@@ -110,7 +113,7 @@ function formEditPlayer(player) {
 async function formExport(player, dbType) {
     const exportText = await exportHandler(dbType)
     const form = new ModalFormData()
-        .title("Export Database")
+        .title("@msl Export Database")
         .textField("Copy this text and save", "Loading...", exportText)
     form.show(player).then((r) => {
         if (r.formValues) {
@@ -125,16 +128,18 @@ async function formExport(player, dbType) {
 
 async function formImport(player, dbType) {
     const form = new ModalFormData()
-        .title("Import Database")
-        .textField("Paste the exported text and confirm.", "Loading...")
+        .title("@msl Import Database")
+        .textField("Paste the exported text and confirm.", "Paste here...")
     form.show(player).then((r) => {
-        if (r.formValues) {
+        if (r.formValues && r.formValues[0] !== "") {
             importHandler(dbType, r.formValues[0])
             if (dbType === "playerDB") {
                 formEditPlayer(player)
             } else if (dbType === "shopDB") {
                 formEditShop(player)
             }
+        } else {
+            msgHandler(player, "You didn't paste anything!", true)
         }
     })
 }

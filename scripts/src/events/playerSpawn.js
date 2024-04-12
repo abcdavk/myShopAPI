@@ -5,7 +5,7 @@ const playerDB = new JaylyDB("player", false)
 
 
 export function playerSpawn(event) {
-    let player = event.player;
+    const player = event.player;
     if (!playerDB.has(player.nameTag)) {
         playerDataBuilder(player, shopDB.has("Example"));
     }

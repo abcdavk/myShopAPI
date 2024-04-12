@@ -6,7 +6,7 @@ export function stringToArray(inputString) {
         let [categoryName, itemsString] = categoryString.split(":[");
         categoryName = categoryName.trim();
         // itemsString = itemsString.replace("]", "");
-
+        
         if (itemsString !==  undefined) {
             let items = itemsString.split(";").map(item => {
                 let [itemName, sell, buy] = item.split(",").map(val => isNaN(val) ? val.trim() : Number(val));
@@ -16,8 +16,8 @@ export function stringToArray(inputString) {
         }
         
     }
-
-    // console.warn(JSON.stringify(resultArray));
+    
+    //console.warn(JSON.stringify(resultArray));
     return resultArray
 }
 
